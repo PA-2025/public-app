@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
@@ -17,5 +27,7 @@
     "target": "es5",
     "allowJs": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
