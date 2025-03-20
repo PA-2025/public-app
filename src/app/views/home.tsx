@@ -9,59 +9,26 @@ import {
   Select,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { AudioRecorder } from "react-audio-voice-recorder";
+import * as Process from "node:process";
+
+const addAudioElement = () => {
+  const url = URL.createObjectURL(new Blob());
+  const audio = document.createElement("audio");
+  audio.src = url;
+  audio.controls = true;
+  document.body.appendChild(audio);
+};
 
 export default class View extends React.Component<ViewProps> {
   render() {
     return (
-      <div className="home">
-        <div className={"container-menu-dataset"}>
-          {["Text", "Image", "Audio", "csv"].map((datasetOption, index) => (
-            <Button>{datasetOption}</Button>
-          ))}
+      <div>
+        <div className={"banner-title"}>
+          <h3>Identify songs from your browser</h3>
         </div>
-
-        <div className={"container-algo"}>
-          <div className={"wrapper"}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Algo</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Model</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className={"wrapper"}>
-            <h2>Train model</h2>
-            <div className={"container-train"}>
-              <TextField
-                id="outlined-basic"
-                label="Nb epoch"
-                variant="outlined"
-              />
-              <Button variant="contained" color="primary">
-                Train
-              </Button>
-            </div>
-          </div>
-          <div className={"wrapper"}>
-            <h2>Try model</h2>
+        <div className={"landing-page"}>
+          <div className={"wrapper-left"}>
             <Button
               component="label"
               role={undefined}
@@ -69,7 +36,58 @@ export default class View extends React.Component<ViewProps> {
               tabIndex={-1}
               startIcon={<CloudUploadIcon />}
             >
-              Upload files
+              Upload song
+            </Button>
+
+            <h4>or</h4>
+
+            <AudioRecorder
+              onRecordingComplete={addAudioElement}
+              audioTrackConstraints={{
+                noiseSuppression: true,
+                echoCancellation: true,
+              }}
+              downloadOnSavePress={true}
+              downloadFileExtension="webm"
+            />
+
+            <FormControl
+              fullWidth
+              sx={{
+                background: "#fff",
+                borderRadius: "10px",
+                marginTop: "20px",
+                width: "30%",
+              }}
+            >
+              <InputLabel id="demo-simple-select-label">Algo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Algo"
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Button
+              variant="contained"
+              sx={{ background: "#fff", color: "#08f", marginTop: "20px" }}
+            >
+              Apply
+            </Button>
+          </div>
+
+          <div className={"wrapper-right"}>
+            <img src={process.env.PUBLIC_URL + "logo.png"} alt="" />
+            <h1>Find the genre of your song</h1>
+            <Button
+              variant="contained"
+              sx={{ background: "#fff", color: "#08f", marginTop: "20px" }}
+            >
+              Try your model
             </Button>
           </div>
         </div>
