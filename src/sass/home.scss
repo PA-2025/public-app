@@ -1,0 +1,31 @@
+.container-menu-dataset {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.container-algo {
+  padding: 20px;
+  width: 80vw;
+  height: 60vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 6px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+}
