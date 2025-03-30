@@ -72,6 +72,8 @@ body {
   animation: gradient 15s ease infinite;
   background-size: 400% 400%;
   overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 
 @keyframes gradient {
