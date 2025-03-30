@@ -1,31 +1,158 @@
-.container-menu-dataset {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+h1 {
+  color: #fff;
+  text-align: center;
+  margin-top: 20px;
 }
 
-.container-algo {
-  padding: 20px;
-  width: 80vw;
-  height: 60vh;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.1),
-    0 6px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+h3 {
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+}
 
-  .wrapper {
+img {
+  width: 30%;
+}
+
+.banner-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 40px;
+}
+
+.landing-page {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  height: 100vh;
+
+  .wrapper-left {
+    flex: 1;
+    margin-right: 10px;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
+  }
+
+  .wrapper-right {
+    flex: 1;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  margin: auto;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(
+    315deg,
+    rgb(30, 134, 239) 3%,
+    rgba(60, 132, 206, 1) 38%,
+    rgba(48, 238, 226, 1) 68%,
+    rgb(84, 206, 192) 98%
+  );
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.wave {
+  background: rgb(255 255 255 / 25%);
+  border-radius: 1000% 1000% 0 0;
+  position: fixed;
+  width: 200%;
+  height: 6em;
+  animation: wave 10s -3s linear infinite;
+  transform: translate3d(0, 0, 0);
+  opacity: 0.8;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 18s linear reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 20s -1s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+    transform: translateX(1);
+  }
+
+  25% {
+    transform: translateX(-25%);
+  }
+
+  50% {
+    transform: translateX(-50%);
+  }
+
+  75% {
+    transform: translateX(-25%);
+  }
+
+  100% {
+    transform: translateX(1);
+  }
+}
+
+.pop-up {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -1000%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: 1s;
+
+  &.active {
+    transform: translate(-50%, -200%);
+  }
+
+  .close-pop-up {
+    cursor: pointer;
   }
 }

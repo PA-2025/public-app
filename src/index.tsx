@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./sass/index.scss";
 
-import { Home } from "./app/providers";
+import { Home, Train } from "./app/providers";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -16,6 +16,7 @@ root.render(
     <Provider>
       <BrowserRouter>
         <Routes>
+          <Route path="/train" element={<Train />}></Route>
           <Route path={"*"} element={<Home />}></Route>
         </Routes>
       </BrowserRouter>
