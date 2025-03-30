@@ -1,16 +1,9 @@
 import React from "react";
 import { ViewProps } from "../types/home";
 import { Button } from "@mui/material";
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { AudioRecorder } from "react-audio-voice-recorder";
-import * as Process from "node:process";
 
 const addAudioElement = () => {
   const url = URL.createObjectURL(new Blob());
@@ -22,8 +15,25 @@ const addAudioElement = () => {
 
 export default class View extends React.Component<ViewProps> {
   render() {
+    const { train_mlp, test_mlp, result } = this.props;
+
     return (
       <div>
+        <div className={"pop-up"}>
+          <div
+            className={"close-pop-up"}
+            onClick={() => {
+              document.querySelector(".pop-up")?.classList.remove("active");
+            }}
+          >
+            <span className={"close"}>&times;</span>
+          </div>
+          <h2>
+            Your muse is{" "}
+            <span>{result != undefined ? result.prediction : ""}</span>
+          </h2>
+        </div>
+
         <div className={"banner-title"}>
           <h3>Identify songs from your browser</h3>
         </div>
@@ -37,6 +47,17 @@ export default class View extends React.Component<ViewProps> {
               startIcon={<CloudUploadIcon />}
             >
               Upload song
+              <input
+                type="file"
+                accept="audio/*"
+                hidden
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) {
+                    return;
+                  }
+                }}
+              />
             </Button>
 
             <h4>or</h4>
@@ -60,21 +81,22 @@ export default class View extends React.Component<ViewProps> {
                 width: "30%",
               }}
             >
-              <InputLabel id="demo-simple-select-label">Algo</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Algo"
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+              <InputLabel id="select-label">Algo</InputLabel>
+              <Select labelId="select-label" id="simple-select" label="Algo">
+                <MenuItem value={"mlp"}>MLP</MenuItem>
+                <MenuItem value={"cnn"}>CNN</MenuItem>
+                <MenuItem value={"linear"}>Linear Regression</MenuItem>
               </Select>
             </FormControl>
 
             <Button
               variant="contained"
               sx={{ background: "#fff", color: "#08f", marginTop: "20px" }}
+              onClick={() => {
+                if (document.querySelectorAll("input")[1]?.value === "mlp") {
+                  test_mlp().then((r) => console.log(r));
+                }
+              }}
             >
               Apply
             </Button>
@@ -86,11 +108,15 @@ export default class View extends React.Component<ViewProps> {
             <Button
               variant="contained"
               sx={{ background: "#fff", color: "#08f", marginTop: "20px" }}
+              onClick={() => (document.location = "/train")}
             >
-              Try your model
+              Train your model
             </Button>
           </div>
         </div>
+        <div className="wave"></div>
+        <div className="wave"></div>
+        <div className="wave"></div>
       </div>
     );
   }
