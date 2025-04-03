@@ -15,7 +15,7 @@ const addAudioElement = () => {
 
 export default class View extends React.Component<ViewProps> {
   render() {
-    const { train_mlp, test_mlp, result } = this.props;
+    const { test_mlp, result } = this.props;
 
     return (
       <div>
