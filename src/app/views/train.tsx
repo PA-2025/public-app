@@ -9,8 +9,11 @@ import {
   Select,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { Neural } from "../../component/neural";
 
 export default class View extends React.Component<ViewProps> {
+  private neuralRef = React.createRef<Neural>();
+
   render() {
     const {
       train_mlp,
@@ -26,7 +29,7 @@ export default class View extends React.Component<ViewProps> {
           <FormControl
             fullWidth
             sx={{
-              background: "#333",
+              background: "#3d8ff5",
               borderRadius: "10px",
               marginTop: "20px",
               width: "30%",
@@ -41,11 +44,13 @@ export default class View extends React.Component<ViewProps> {
             </Select>
           </FormControl>
 
+          <Neural ref={this.neuralRef} />
+
           <Input
             id="input-number"
             sx={{
               marginTop: "20px",
-              background: "#333",
+              background: "#3d8ff5",
               color: "#fff",
               padding: "10px",
             }}
@@ -55,18 +60,16 @@ export default class View extends React.Component<ViewProps> {
 
           <Button
             variant="contained"
-            sx={{ background: "#333", color: "#fff", marginTop: "20px" }}
+            sx={{ background: "#3d8ff5", color: "#fff", marginTop: "20px" }}
             onClick={() => {
-              const nb_epochs =
-                (
-                  document.querySelector(
-                    "input[type=number]",
-                  ) as HTMLInputElement
-                )?.value || "1";
+              const nb_epochs = (
+                document.querySelector("#input-number") as HTMLInputElement
+              ).value;
               if (document.querySelector("input")?.value === "mlp") {
-                train_mlp(parseInt(nb_epochs), [3, 4, 7]).then((r) =>
-                  console.log(r),
-                );
+                train_mlp(
+                  parseInt(nb_epochs),
+                  this.neuralRef.current?.get_neural() || [],
+                ).then((r) => console.log(r));
               }
             }}
           >
@@ -81,7 +84,11 @@ export default class View extends React.Component<ViewProps> {
                 <Button
                   variant="contained"
                   className={"button-result button-result" + index}
-                  sx={{ background: "#333", color: "#fff", marginTop: "20px" }}
+                  sx={{
+                    background: "#3d8ff5",
+                    color: "#fff",
+                    marginTop: "20px",
+                  }}
                   onClick={() => {
                     setSelectedGraph(file);
                     if (
@@ -107,7 +114,20 @@ export default class View extends React.Component<ViewProps> {
           <div className={"container-charts"}>
             <LineChart
               title={"Training results"}
-              xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+              xAxis={[
+                {
+                  data: Array.from(
+                    {
+                      length: Math.max(
+                        ...(resultsFile?.results.map(
+                          (result) => result.data.length,
+                        ) || [600]),
+                      ),
+                    },
+                    (_, i) => i + 1,
+                  ),
+                },
+              ]}
               series={
                 resultsFile?.results
                   .filter((result) => selectedGraph.includes(result.name))
