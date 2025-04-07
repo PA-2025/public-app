@@ -2,7 +2,7 @@
   width: 100vw;
   min-height: 100vh;
 
-  background: #1e1e1e;
+  background: $color_bleu_page;
 
   .train-buttons {
     display: flex;
@@ -11,13 +11,15 @@
     flex-direction: column;
     padding-top: 50px;
     width: 100vw;
-    background: #1e1e1e;
+    background: $color_bleu_page;
   }
 
   .view_training_results {
+    max-height: 70vh;
+
     .container-results {
       padding: 20px;
-      background: #2c2c2c;
+      background: $color_blue_container;
       height: 70vh;
       overflow-y: auto;
       width: 20%;
@@ -32,19 +34,20 @@
   }
 
   .container-charts {
-    position: fixed;
-    top: 30vh;
+    background: $color_blue_container;
+    position: relative;
+    top: -70vh;
     left: 30vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 70vw;
-    height: 70vh;
+    width: 60vw;
+    border-radius: 10px;
   }
 
   .button-result.selected {
-    background: #2c2c2c;
-    color: #f00;
+    background: $color_blue;
+    color: #333;
   }
 }

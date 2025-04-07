@@ -18,7 +18,7 @@ export default class View extends React.Component<ViewProps> {
     const { test_mlp, result } = this.props;
 
     return (
-      <div>
+      <div className={"home-page"}>
         <div className={"pop-up"}>
           <div
             className={"close-pop-up"}
@@ -114,9 +114,6 @@ export default class View extends React.Component<ViewProps> {
             </Button>
           </div>
         </div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
       </div>
     );
   }
