@@ -17,7 +17,7 @@ export default class TrainController extends Component<
       models: [],
       resultsTraining: undefined,
       resultsFile: undefined,
-      selectedGraph: "",
+      selectedGraph: [],
     };
 
     this.train_model = new TrainModel();
@@ -44,7 +44,16 @@ export default class TrainController extends Component<
         resultsFile={this.state.resultsFile}
         selectedGraph={this.state.selectedGraph}
         setSelectedGraph={(graph: string) =>
-          this.setState({ selectedGraph: graph })
+          this.setState((prevState) => {
+            const selectedGraph = prevState.selectedGraph;
+            if (selectedGraph.includes(graph)) {
+              return {
+                selectedGraph: selectedGraph.filter((g) => g !== graph),
+              };
+            } else {
+              return { selectedGraph: [...selectedGraph, graph] };
+            }
+          })
         }
         train_mlp={() => this.train_model.train_mlp(1, [1, 2, 3])}
       />

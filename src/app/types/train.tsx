@@ -4,7 +4,7 @@ export interface ViewProps {
   train_mlp: (nb_epochs: number, architecture: number[]) => Promise<any>;
   resultsTraining: GetTrainingResultsResponse | undefined;
   resultsFile: GetTrainingResultsFileResponse | undefined;
-  selectedGraph: string;
+  selectedGraph: string[];
   setSelectedGraph: (graph: string) => void;
 }
 
@@ -16,7 +16,7 @@ export interface ControllerState {
   models: ModelInterface[];
   resultsTraining: GetTrainingResultsResponse | undefined;
   resultsFile: GetTrainingResultsFileResponse | undefined;
-  selectedGraph: string;
+  selectedGraph: string[];
 }
 
 export interface ModelInterface {

@@ -80,9 +80,23 @@ export default class View extends React.Component<ViewProps> {
               <div key={index}>
                 <Button
                   variant="contained"
+                  className={"button-result button-result" + index}
                   sx={{ background: "#333", color: "#fff", marginTop: "20px" }}
                   onClick={() => {
                     setSelectedGraph(file);
+                    if (
+                      document
+                        .querySelector(".button-result" + index)
+                        ?.classList.contains("selected")
+                    ) {
+                      document
+                        .querySelector(".button-result" + index)
+                        ?.classList.remove("selected");
+                    } else {
+                      document
+                        .querySelector(".button-result" + index)
+                        ?.classList.add("selected");
+                    }
                   }}
                 >
                   {file}
@@ -94,16 +108,13 @@ export default class View extends React.Component<ViewProps> {
             <LineChart
               title={"Training results"}
               xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-              series={[
-                {
-                  data:
-                    resultsFile == undefined
-                      ? []
-                      : resultsFile.results.find(
-                          (result) => result.name === selectedGraph,
-                        )?.data || [],
-                },
-              ]}
+              series={
+                resultsFile?.results
+                  .filter((result) => selectedGraph.includes(result.name))
+                  .map((result) => ({
+                    data: result.data,
+                  })) || []
+              }
               width={1000}
               height={500}
             />
