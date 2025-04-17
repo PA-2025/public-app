@@ -4,9 +4,13 @@ import {
 } from "@/src/app/types/train";
 
 export class TrainModel {
-  public async train_mlp(nb_epochs: number, architecture: number[]) {
+  public async train_mlp(
+    nb_epochs: number,
+    architecture: number[],
+    learning_rate: number,
+  ) {
     const response = await fetch(
-      `http://localhost:8000/train_mlp?nb_epochs=${nb_epochs}`,
+      `http://localhost:8000/train_mlp?nb_epochs=${nb_epochs}&learning_rate=={learning_rate}`,
       {
         method: "POST",
 

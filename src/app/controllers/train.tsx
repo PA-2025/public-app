@@ -55,8 +55,8 @@ export default class TrainController extends Component<
             }
           })
         }
-        train_mlp={(nb_epochs, architecture) =>
-          this.train_model.train_mlp(nb_epochs, architecture)
+        train_mlp={(nb_epochs, architecture, learning_rate) =>
+          this.train_model.train_mlp(nb_epochs, architecture, learning_rate)
         }
       />
     );

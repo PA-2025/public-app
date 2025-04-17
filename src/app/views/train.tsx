@@ -7,6 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Slider,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Neural } from "../../component/neural";
@@ -29,7 +30,7 @@ export default class View extends React.Component<ViewProps> {
           <FormControl
             fullWidth
             sx={{
-              background: "#3d8ff5",
+              background: "#2874a6",
               borderRadius: "10px",
               marginTop: "20px",
               width: "30%",
@@ -50,7 +51,7 @@ export default class View extends React.Component<ViewProps> {
             id="input-number"
             sx={{
               marginTop: "20px",
-              background: "#3d8ff5",
+              background: "#2874a6",
               color: "#fff",
               padding: "10px",
             }}
@@ -58,17 +59,37 @@ export default class View extends React.Component<ViewProps> {
             placeholder={"nb_epochs"}
           />
 
+          <Slider
+            sx={{ width: "30%", margin: "auto", marginTop: "20px" }}
+            aria-label="Custom marks"
+            defaultValue={0.01}
+            min={0}
+            max={0.1}
+            aria-valuetext={"learning rate"}
+            step={0.01}
+            valueLabelDisplay="auto"
+            id="input-learning-rate"
+          />
+
+          <h3>Learning rate</h3>
+
           <Button
             variant="contained"
-            sx={{ background: "#3d8ff5", color: "#fff", marginTop: "20px" }}
+            sx={{ background: "#2874a6", color: "#fff", marginTop: "20px" }}
             onClick={() => {
               const nb_epochs = (
                 document.querySelector("#input-number") as HTMLInputElement
+              ).value;
+              const learning_rate = (
+                document.querySelector(
+                  "#input-learning-rate input",
+                ) as HTMLInputElement
               ).value;
               if (document.querySelector("input")?.value === "mlp") {
                 train_mlp(
                   parseInt(nb_epochs),
                   this.neuralRef.current?.get_neural() || [],
+                  parseFloat(learning_rate),
                 ).then((r) => console.log(r));
               }
             }}
@@ -85,7 +106,7 @@ export default class View extends React.Component<ViewProps> {
                   variant="contained"
                   className={"button-result button-result" + index}
                   sx={{
-                    background: "#3d8ff5",
+                    background: "#2874a6",
                     color: "#fff",
                     marginTop: "20px",
                   }}
