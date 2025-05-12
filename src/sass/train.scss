@@ -1,53 +1,89 @@
 .train-page {
-  width: 100vw;
-  min-height: 100vh;
-
-  background: $color_bleu_page;
-
-  .train-buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 50px;
     width: 100vw;
+    min-height: 100vh;
+
     background: $color_bleu_page;
-  }
 
-  .view_training_results {
-    max-height: 70vh;
 
-    .container-results {
-      padding: 20px;
-      background: $color_blue_container;
-      height: 70vh;
-      overflow-y: auto;
-      width: 20%;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    .container-cat-dataset-filters {
 
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      &::-webkit-scrollbar {
-        display: none;
-      }
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+        .cat-dataset-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            background: $color_blue_container;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation-duration: 1s;
+            cursor: pointer;
+            margin: 10px;
+            color: white;
+
+
+            &:hover {
+                transform: scale(1.1);
+            }
+
+            &.active {
+                transform: scale(1.1);
+            }
+
+        }
+
+
+
+
     }
-  }
 
-  .container-charts {
-    background: $color_blue_container;
-    position: relative;
-    top: -70vh;
-    left: 30vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 60vw;
-    border-radius: 10px;
-  }
+    .train-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 50px;
+        width: 100vw;
+        background: $color_bleu_page;
+    }
 
-  .button-result.selected {
-    background: $color_blue;
-    color: #333;
-  }
+    .view_training_results {
+        max-height: 70vh;
+
+        .container-results {
+            padding: 20px;
+            background: $color_blue_container;
+            height: 70vh;
+            overflow-y: auto;
+            width: 20%;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+
+    .container-charts {
+        background: $color_blue_container;
+        position: relative;
+        top: -70vh;
+        left: 30vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 60vw;
+        border-radius: 10px;
+    }
+
+    .button-result.selected {
+        background: $color_blue;
+        color: #333;
+    }
 }
