@@ -72,30 +72,12 @@ export default class View extends React.Component<ViewProps> {
               downloadFileExtension="webm"
             />
 
-            <FormControl
-              fullWidth
-              sx={{
-                background: "#fff",
-                borderRadius: "10px",
-                marginTop: "20px",
-                width: "30%",
-              }}
-            >
-              <InputLabel id="select-label">Algo</InputLabel>
-              <Select labelId="select-label" id="simple-select" label="Algo">
-                <MenuItem value={"mlp"}>MLP</MenuItem>
-                <MenuItem value={"cnn"}>CNN</MenuItem>
-                <MenuItem value={"linear"}>Linear Regression</MenuItem>
-              </Select>
-            </FormControl>
 
             <Button
               variant="contained"
-              sx={{ background: "#fff", color: "#08f", marginTop: "20px" }}
+              sx={{ background: "#fff", color: "#08f", marginTop: "20px", padding: "10px 20px" }}
               onClick={() => {
-                if (document.querySelectorAll("input")[1]?.value === "mlp") {
-                  test_mlp().then((r) => console.log(r));
-                }
+                test_mlp().then((r) => console.log(r));
               }}
             >
               Apply
