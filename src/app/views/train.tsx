@@ -18,6 +18,7 @@ export default class View extends React.Component<ViewProps> {
     render() {
         const {
             train_mlp,
+            train_rbf,
             resultsTraining,
             resultsFile,
             selectedGraph,
@@ -41,26 +42,37 @@ export default class View extends React.Component<ViewProps> {
                         }}
                     >
                         <InputLabel id="select-label">Algo</InputLabel>
-                        <Select labelId="select-label" id="simple-select" label="Algo">
+                        <Select labelId="select-label" id="simple-select" label="Algo" onChange={() => {
+                            setTimeout(() => {
+                                setSelectedCatDataset("");
+                            }, 100);
+                        }}>
                             <MenuItem value={"mlp"}>MLP</MenuItem>
-                            <MenuItem value={"cnn"}>CNN</MenuItem>
+                            <MenuItem value={"rbf"}>RBF</MenuItem>
+                            <MenuItem value={"svm"}>SVM</MenuItem>
                             <MenuItem value={"linear"}>Linear Regression</MenuItem>
                         </Select>
                     </FormControl>
 
-                    <Neural ref={this.neuralRef}/>
+                    {
+                        document.querySelector("input")?.value === "mlp" ? <Neural ref={this.neuralRef}/> : ''
+                    }
 
-                    <Input
-                        id="input-number"
-                        sx={{
-                            marginTop: "20px",
-                            background: "#2874a6",
-                            color: "#fff",
-                            padding: "10px",
-                        }}
-                        type="number"
-                        placeholder={"nb_epochs"}
-                    />
+                    {
+                        document.querySelector("input")?.value === "mlp" ?
+                            <Input
+                                id="input-number"
+                                sx={{
+                                    marginTop: "20px",
+                                    background: "#2874a6",
+                                    color: "#fff",
+                                    padding: "10px",
+                                }}
+                                type="number"
+                                placeholder={"nb_epochs"}
+                            /> : ''
+                    }
+
 
                     <Slider
                         sx={{width: "30%", margin: "auto", marginTop: "20px"}}
@@ -74,7 +86,7 @@ export default class View extends React.Component<ViewProps> {
                         id="input-learning-rate"
                     />
 
-                    <h3>Learning rate</h3>
+                    <h3>{document.querySelector("input")?.value === "rbf" ? "gamma" : "Learning rate"}</h3>
 
 
                     <div className={"container-cat-dataset-filters"}>
@@ -109,7 +121,14 @@ export default class View extends React.Component<ViewProps> {
                                     parseFloat(learning_rate),
                                     selectedCatDataset
                                 ).then((r) => console.log(r));
+                            } else if (document.querySelector("input")?.value === "rbf") {
+                                train_rbf(
+                                    parseFloat(learning_rate),
+                                    selectedCatDataset
+                                ).then((r) => console.log(r));
                             }
+
+
                         }}
                     >
                         Train
