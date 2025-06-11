@@ -66,6 +66,9 @@ export default class TrainController extends Component<
                 train_mlp={(nb_epochs, architecture, learning_rate, filter_cat: string[]) =>
                     this.train_model.train_mlp(nb_epochs, architecture, learning_rate, filter_cat)
                 }
+                train_rbf={(gamma:number, filter_cat: string[]) =>
+                    this.train_model.train_rbf(gamma, filter_cat)
+                }
                 catDataset={this.state.catDataset}
                 selectedCatDataset={this.state.selectedCatDataset}
                 setSelectedCatDataset={(cat: string) =>

@@ -18,6 +18,7 @@ export default class View extends React.Component<ViewProps> {
     render() {
         const {
             train_mlp,
+            train_rbf,
             resultsTraining,
             resultsFile,
             selectedGraph,
@@ -109,7 +110,14 @@ export default class View extends React.Component<ViewProps> {
                                     parseFloat(learning_rate),
                                     selectedCatDataset
                                 ).then((r) => console.log(r));
+                            } else if (document.querySelector("input")?.value === "rbf") {
+                                train_rbf(
+                                    parseFloat(learning_rate),
+                                    selectedCatDataset
+                                ).then((r) => console.log(r));
                             }
+
+
                         }}
                     >
                         Train

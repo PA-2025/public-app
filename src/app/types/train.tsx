@@ -7,6 +7,7 @@ export interface ViewProps {
         learning_rate: number,
         filter_cat: string[],
     ) => Promise<any>;
+    train_rbf: (gamma: number, filter_cat: string[]) => Promise<any>;
     resultsTraining: GetTrainingResultsResponse | undefined;
     resultsFile: GetTrainingResultsFileResponse | undefined;
     selectedGraph: string[];
