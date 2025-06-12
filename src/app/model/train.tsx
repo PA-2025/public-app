@@ -43,9 +43,7 @@ export class TrainModel {
                     accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    filter_cat: filter_cat,
-                }),
+                body: JSON.stringify(filter_cat),
             },
         );
         const data = await response.json();
