@@ -58,20 +58,19 @@ export default class View extends React.Component<ViewProps> {
                         document.querySelector("input")?.value === "mlp" ? <Neural ref={this.neuralRef}/> : ''
                     }
 
-                    {
-                        document.querySelector("input")?.value === "mlp" ?
-                            <Input
-                                id="input-number"
-                                sx={{
+                    <Input
+                        id="input-number"
+                        sx={
+                            document.querySelector("input")?.value !== "mlp" ? {display: "none"} :
+                                {
                                     marginTop: "20px",
                                     background: "#2874a6",
                                     color: "#fff",
                                     padding: "10px",
                                 }}
-                                type="number"
-                                placeholder={"nb_epochs"}
-                            /> : ''
-                    }
+                        type="number"
+                        placeholder={"nb_epochs"}
+                    /> : ''
 
 
                     <Slider
