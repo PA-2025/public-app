@@ -4,9 +4,7 @@
 
     background: $color_bleu_page;
 
-
     .container-cat-dataset-filters {
-
         display: flex;
         justify-content: space-evenly;
         align-items: center;
@@ -24,7 +22,6 @@
             margin: 10px;
             color: white;
 
-
             &:hover {
                 transform: scale(1.1);
             }
@@ -32,12 +29,7 @@
             &.active {
                 transform: scale(1.1);
             }
-
         }
-
-
-
-
     }
 
     .train-buttons {

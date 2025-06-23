@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {observer} from "mobx-react";
-import {ControllerProps, ControllerState} from "../types/train";
-import View from "../views/train";
-import {TrainModel} from "../model/train";
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { ControllerProps, ControllerState } from '../types/train';
+import View from '../views/train';
+import { TrainModel } from '../model/train';
 
 @observer
 export default class TrainController extends Component<
@@ -19,30 +19,30 @@ export default class TrainController extends Component<
             resultsFile: undefined,
             selectedGraph: [],
             selectedCatDataset: [],
-            catDataset: []
+            catDataset: [],
         };
 
         this.train_model = new TrainModel();
 
         this.fetch_training_result().then((r) => console.log(r));
         this.fetch_training_result_file().then((r) => console.log(r));
-        this.fetch_cat_dataset().then(r => console.log(r));
+        this.fetch_cat_dataset().then((r) => console.log(r));
     }
 
     private async fetch_training_result(): Promise<void> {
         const result = await this.train_model.get_training_results();
-        this.setState({resultsTraining: result});
+        this.setState({ resultsTraining: result });
     }
 
     private async fetch_cat_dataset(): Promise<void> {
         const result = await this.train_model.get_cat_dataset();
-        this.setState({catDataset: result.cat});
+        this.setState({ catDataset: result.cat });
     }
 
     private async fetch_training_result_file(): Promise<void> {
         const result = await this.train_model.get_training_results_file();
         console.log(result.results);
-        this.setState({resultsFile: result});
+        this.setState({ resultsFile: result });
     }
 
     render() {
@@ -56,18 +56,38 @@ export default class TrainController extends Component<
                         const selectedGraph = prevState.selectedGraph;
                         if (selectedGraph.includes(graph)) {
                             return {
-                                selectedGraph: selectedGraph.filter((g) => g !== graph),
+                                selectedGraph: selectedGraph.filter(
+                                    (g) => g !== graph
+                                ),
                             };
                         } else {
-                            return {selectedGraph: [...selectedGraph, graph]};
+                            return { selectedGraph: [...selectedGraph, graph] };
                         }
                     })
                 }
-                train_mlp={(nb_epochs, architecture, learning_rate, filter_cat: string[]) =>
-                    this.train_model.train_mlp(nb_epochs, architecture, learning_rate, filter_cat)
+                train_mlp={(
+                    nb_epochs,
+                    architecture,
+                    learning_rate,
+                    filter_cat: string[]
+                ) =>
+                    this.train_model.train_mlp(
+                        nb_epochs,
+                        architecture,
+                        learning_rate,
+                        filter_cat
+                    )
                 }
-                train_rbf={(gamma:number, filter_cat: string[]) =>
-                    this.train_model.train_rbf(gamma, filter_cat)
+                train_rbf={(
+                    gamma: number,
+                    number_cluster: number,
+                    filter_cat: string[]
+                ) =>
+                    this.train_model.train_rbf(
+                        gamma,
+                        number_cluster,
+                        filter_cat
+                    )
                 }
                 catDataset={this.state.catDataset}
                 selectedCatDataset={this.state.selectedCatDataset}
@@ -76,10 +96,14 @@ export default class TrainController extends Component<
                         const selectedGraph = prevState.selectedCatDataset;
                         if (selectedGraph.includes(cat)) {
                             return {
-                                selectedCatDataset: selectedGraph.filter((g) => g !== cat),
+                                selectedCatDataset: selectedGraph.filter(
+                                    (g) => g !== cat
+                                ),
                             };
                         } else {
-                            return {selectedCatDataset: [...selectedGraph, cat]};
+                            return {
+                                selectedCatDataset: [...selectedGraph, cat],
+                            };
                         }
                     })
                 }
