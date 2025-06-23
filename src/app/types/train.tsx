@@ -1,13 +1,17 @@
-import ViewModel from "../view-models/train";
+import ViewModel from '../view-models/train';
 
 export interface ViewProps {
     train_mlp: (
         nb_epochs: number,
         architecture: number[],
         learning_rate: number,
-        filter_cat: string[],
+        filter_cat: string[]
     ) => Promise<any>;
-    train_rbf: (gamma: number, filter_cat: string[]) => Promise<any>;
+    train_rbf: (
+        gamma: number,
+        number_clusters: number,
+        filter_cat: string[]
+    ) => Promise<any>;
     resultsTraining: GetTrainingResultsResponse | undefined;
     resultsFile: GetTrainingResultsFileResponse | undefined;
     selectedGraph: string[];

@@ -1,109 +1,109 @@
 h1 {
-  color: #fff;
-  text-align: center;
-  margin-top: 20px;
+    color: #fff;
+    text-align: center;
+    margin-top: 20px;
 }
 
 h3 {
-  color: #fff;
-  text-align: center;
-  margin-top: 10px;
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
 }
 
 img {
-  width: 30%;
+    width: 30%;
 }
 
 .banner-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 40px;
 }
 
 .landing-page {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  height: 100vh;
-
-  .wrapper-left {
-    flex: 1;
-    margin-right: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+    justify-content: space-between;
+    padding: 20px;
+    height: 100vh;
 
-  .wrapper-right {
-    flex: 1;
-    margin-left: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+    .wrapper-left {
+        flex: 1;
+        margin-right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .wrapper-right {
+        flex: 1;
+        margin-left: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 }
 
 @keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 body {
-  margin: auto;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: $color_bleu_page;
-  animation: gradient 15s ease infinite;
-  background-size: 400% 400%;
-  width: 100vw;
-  height: 100vh;
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: $color_bleu_page;
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    width: 100vw;
+    height: 100vh;
 }
 
 @keyframes gradient {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
 }
 
 .pop-up {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -1000%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  transition: 1s;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -1000%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: 1s;
 
-  &.active {
-    transform: translate(-50%, -200%);
-  }
+    &.active {
+        transform: translate(-50%, -200%);
+    }
 
-  .close-pop-up {
-    cursor: pointer;
-  }
+    .close-pop-up {
+        cursor: pointer;
+    }
 }
 
 .home-page {
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
 }
