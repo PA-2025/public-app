@@ -68,8 +68,9 @@ export default class View extends React.Component<ViewProps> {
                     <Input
                         id="input-number"
                         sx={
-                            document.querySelector('input')?.value !== 'mlp' ||
-                            document.querySelector('input')?.value !== 'rbf'
+                            !['mlp', 'rbf'].includes(
+                                document.querySelector('input')?.value ?? ''
+                            )
                                 ? { display: 'none' }
                                 : {
                                       marginTop: '20px',
@@ -81,8 +82,8 @@ export default class View extends React.Component<ViewProps> {
                         type="number"
                         placeholder={
                             document.querySelector('input')?.value !== 'mlp'
-                                ? 'nb_epochs'
-                                : 'nb_clusters'
+                                ? 'nb_clusters'
+                                : 'nb_epochs'
                         }
                     />{' '}
                     : ''

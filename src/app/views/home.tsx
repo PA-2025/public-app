@@ -9,6 +9,12 @@ export default class View extends React.Component<ViewProps> {
 
         return (
             <div className={'home-page'}>
+                <audio
+                    src={process.env.PUBLIC_URL + 'test.mp3'}
+                    controls
+                    style={{ display: 'none' }}
+                ></audio>
+
                 <div className={'pop-up'}>
                     <div
                         className={'close-pop-up'}
@@ -53,6 +59,8 @@ export default class View extends React.Component<ViewProps> {
                                 }}
                             />
                         </Button>
+
+                        <br></br>
 
                         <Button
                             component="label"

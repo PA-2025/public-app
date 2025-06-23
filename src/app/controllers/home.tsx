@@ -57,6 +57,12 @@ export default class HomeController extends Component<
             return;
         }
 
+        const audioElement = document.querySelector('audio');
+        if (audioElement) {
+            audioElement.src = URL.createObjectURL(audio_file);
+            await audioElement.play();
+        }
+
         const weight_file = document.querySelector(
             '#weight_file'
         ) as HTMLInputElement;
@@ -75,6 +81,8 @@ export default class HomeController extends Component<
 
         const result = await this.home_model.predict_all(audio_file, weight);
         this.setState({ result: result });
+
+        audioElement?.pause();
     };
 
     render() {
