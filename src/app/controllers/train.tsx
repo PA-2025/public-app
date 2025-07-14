@@ -89,6 +89,23 @@ export default class TrainController extends Component<
                         filter_cat
                     )
                 }
+                train_svm={(
+                    nb_epochs,
+                    param,
+                    learning_rate,
+                    filter_cat,
+                    lambda_svm,
+                    kernel
+                ) =>
+                    this.train_model.train_svm(
+                        nb_epochs,
+                        param,
+                        learning_rate,
+                        filter_cat,
+                        lambda_svm,
+                        kernel
+                    )
+                }
                 catDataset={this.state.catDataset}
                 selectedCatDataset={this.state.selectedCatDataset}
                 setSelectedCatDataset={(cat: string) =>

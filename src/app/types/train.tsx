@@ -7,11 +7,22 @@ export interface ViewProps {
         learning_rate: number,
         filter_cat: string[]
     ) => Promise<any>;
+
     train_rbf: (
         gamma: number,
         number_clusters: number,
         filter_cat: string[]
     ) => Promise<any>;
+
+    train_svm: (
+        nb_epochs: number,
+        param: number,
+        learning_rate: number,
+        filter_cat: string[],
+        lambda_svm: number,
+        kernel: string
+    ) => Promise<any>;
+
     resultsTraining: GetTrainingResultsResponse | undefined;
     resultsFile: GetTrainingResultsFileResponse | undefined;
     selectedGraph: string[];
