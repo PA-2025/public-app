@@ -15,6 +15,11 @@ import { Neural } from '../../component/neural';
 export default class View extends React.Component<ViewProps> {
     private neuralRef = React.createRef<Neural>();
 
+    state = {
+        selectedAlgo: 'mlp',
+        selectedKernel: 'rbf',
+    };
+
     render() {
         const {
             train_mlp,
@@ -29,7 +34,7 @@ export default class View extends React.Component<ViewProps> {
             selectedCatDataset,
         } = this.props;
 
-        const algo = (document.querySelector('input') as HTMLInputElement)?.value;
+        const { selectedAlgo, selectedKernel } = this.state;
 
         return (
             <div className={'train-page'}>
@@ -48,8 +53,9 @@ export default class View extends React.Component<ViewProps> {
                         <Select
                             labelId="select-label"
                             id="simple-select"
+                            value={selectedAlgo}
                             label="Algo"
-                            onChange={() => setTimeout(() => setSelectedCatDataset(''), 100)}
+                            onChange={(e) => this.setState({ selectedAlgo: e.target.value, selectedKernel: 'rbf' })}
                         >
                             <MenuItem value={'mlp'}>MLP</MenuItem>
                             <MenuItem value={'rbf'}>RBF</MenuItem>
@@ -57,7 +63,7 @@ export default class View extends React.Component<ViewProps> {
                         </Select>
                     </FormControl>
 
-                    {algo === 'mlp' && <Neural ref={this.neuralRef} />}
+                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef} />}
 
                     <Input
                         id="input-number"
@@ -69,9 +75,9 @@ export default class View extends React.Component<ViewProps> {
                         }}
                         type="number"
                         placeholder={
-                            algo === 'mlp'
+                            selectedAlgo === 'mlp'
                                 ? 'nb_epochs'
-                                : algo === 'rbf'
+                                : selectedAlgo === 'rbf'
                                     ? 'nb_clusters'
                                     : 'nb_epochs'
                         }
@@ -79,7 +85,7 @@ export default class View extends React.Component<ViewProps> {
 
                     <div style={{ width: '30%', margin: 'auto', marginTop: '20px' }}>
                         <h3 style={{ textAlign: 'center', color: '#fff', marginBottom: '10px' }}>
-                            {algo === 'rbf' ? 'Gamma' : 'Learning rate'}
+                            {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
                         </h3>
                         <Slider
                             id="input-learning-rate"
@@ -98,7 +104,7 @@ export default class View extends React.Component<ViewProps> {
                         />
                     </div>
 
-                    {algo === 'svm' && (
+                    {selectedAlgo === 'svm' && (
                         <>
                             <FormControl
                                 fullWidth
@@ -114,8 +120,9 @@ export default class View extends React.Component<ViewProps> {
                                 <Select
                                     labelId="kernel-label"
                                     id="input-kernel"
-                                    defaultValue={'rbf'}
+                                    value={selectedKernel}
                                     label="Kernel"
+                                    onChange={(e) => this.setState({ selectedKernel: e.target.value })}
                                 >
                                     <MenuItem value={'rbf'}>RBF</MenuItem>
                                     <MenuItem value={'poly'}>Polynomial</MenuItem>
@@ -153,9 +160,7 @@ export default class View extends React.Component<ViewProps> {
                                 onClick={() => setSelectedCatDataset(cat)}
                                 className={
                                     'cat-dataset-box' +
-                                    (selectedCatDataset.includes(cat)
-                                        ? ' active'
-                                        : ' ')
+                                    (selectedCatDataset.includes(cat) ? ' active' : ' ')
                                 }
                             >
                                 {cat}
@@ -167,30 +172,25 @@ export default class View extends React.Component<ViewProps> {
                         variant="contained"
                         sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
                         onClick={() => {
-                            const nb_epochs = parseInt(
-                                (document.querySelector('#input-number') as HTMLInputElement)?.value || '0'
-                            );
-                            const learning_rate = parseFloat(
-                                (document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01'
-                            );
+                            const nb_epochs = parseInt((document.querySelector('#input-number') as HTMLInputElement)?.value || '0');
+                            const learning_rate = parseFloat((document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01');
 
-                            if (algo === 'mlp') {
+                            if (selectedAlgo === 'mlp') {
                                 train_mlp(
                                     nb_epochs,
                                     this.neuralRef.current?.get_neural() || [],
                                     learning_rate,
                                     selectedCatDataset
                                 );
-                            } else if (algo === 'rbf') {
+                            } else if (selectedAlgo === 'rbf') {
                                 train_rbf(
                                     learning_rate,
                                     nb_epochs,
                                     selectedCatDataset
                                 );
-                            } else if (algo === 'svm') {
+                            } else if (selectedAlgo === 'svm') {
                                 const param = parseFloat((document.querySelector('#input-param') as HTMLInputElement)?.value || '1');
                                 const lambda_svm = parseFloat((document.querySelector('#input-lambda') as HTMLInputElement)?.value || '0.01');
-                                const kernel = (document.querySelector('#input-kernel') as HTMLInputElement)?.value;
 
                                 train_svm(
                                     nb_epochs,
@@ -198,7 +198,7 @@ export default class View extends React.Component<ViewProps> {
                                     learning_rate,
                                     selectedCatDataset,
                                     lambda_svm,
-                                    kernel
+                                    selectedKernel
                                 );
                             }
                         }}
