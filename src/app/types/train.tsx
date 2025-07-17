@@ -15,7 +15,6 @@ export interface ViewProps {
     ) => Promise<any>;
 
     train_svm: (
-        nb_epochs: number,
         param: number,
         learning_rate: number,
         filter_cat: string[],

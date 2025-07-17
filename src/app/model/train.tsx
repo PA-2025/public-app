@@ -50,7 +50,6 @@ export class TrainModel {
     }
 
     public async train_svm(
-        nb_epochs: number,
         param: number,
         learning_rate: number,
         filter_cat: string[],
@@ -58,7 +57,7 @@ export class TrainModel {
         kernel: string
     ) {
         const response = await fetch(
-            `http://localhost:8000/train_svm?nb_epochs=${nb_epochs}&learning_rate=${learning_rate}&lambda_svm=${lambda_svm}&kernel=${kernel}&param=${param}`,
+            `http://localhost:8000/train_svm?learning_rate=${learning_rate}&lambda_svm=${lambda_svm}&kernel=${kernel}&param=${param}`,
             {
                 method: 'POST',
                 headers: {

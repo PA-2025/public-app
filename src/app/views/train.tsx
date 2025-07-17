@@ -79,8 +79,9 @@ export default class View extends React.Component<ViewProps> {
                                 ? 'nb_epochs'
                                 : selectedAlgo === 'rbf'
                                     ? 'nb_clusters'
-                                    : 'nb_epochs'
+                                    : ''
                         }
+                        disabled={selectedAlgo === 'svm'}
                     />
 
                     <div style={{ width: '30%', margin: 'auto', marginTop: '20px' }}>
@@ -193,7 +194,6 @@ export default class View extends React.Component<ViewProps> {
                                 const lambda_svm = parseFloat((document.querySelector('#input-lambda') as HTMLInputElement)?.value || '0.01');
 
                                 train_svm(
-                                    nb_epochs,
                                     param,
                                     learning_rate,
                                     selectedCatDataset,

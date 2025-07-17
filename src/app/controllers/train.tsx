@@ -90,7 +90,6 @@ export default class TrainController extends Component<
                     )
                 }
                 train_svm={(
-                    nb_epochs,
                     param,
                     learning_rate,
                     filter_cat,
@@ -98,7 +97,6 @@ export default class TrainController extends Component<
                     kernel
                 ) =>
                     this.train_model.train_svm(
-                        nb_epochs,
                         param,
                         learning_rate,
                         filter_cat,
