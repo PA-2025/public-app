@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps } from '@/src/app/types/train';
+import {ViewProps} from '@/src/app/types/train';
 import {
     Button,
     FormControl,
@@ -9,8 +9,8 @@ import {
     Select,
     Slider,
 } from '@mui/material';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { Neural } from '../../component/neural';
+import {LineChart} from '@mui/x-charts/LineChart';
+import {Neural} from '../../component/neural';
 
 export default class View extends React.Component<ViewProps> {
     private neuralRef = React.createRef<Neural>();
@@ -25,6 +25,7 @@ export default class View extends React.Component<ViewProps> {
             train_mlp,
             train_rbf,
             train_svm,
+            train_ols,
             resultsTraining,
             resultsFile,
             selectedGraph,
@@ -34,7 +35,7 @@ export default class View extends React.Component<ViewProps> {
             selectedCatDataset,
         } = this.props;
 
-        const { selectedAlgo, selectedKernel } = this.state;
+        const {selectedAlgo, selectedKernel} = this.state;
 
         return (
             <div className={'train-page'}>
@@ -55,17 +56,18 @@ export default class View extends React.Component<ViewProps> {
                             id="simple-select"
                             value={selectedAlgo}
                             label="Algo"
-                            onChange={(e) => this.setState({ selectedAlgo: e.target.value, selectedKernel: 'rbf' })}
+                            onChange={(e) => this.setState({selectedAlgo: e.target.value, selectedKernel: 'rbf'})}
                         >
                             <MenuItem value={'mlp'}>MLP</MenuItem>
                             <MenuItem value={'rbf'}>RBF</MenuItem>
                             <MenuItem value={'svm'}>SVM</MenuItem>
+                            <MenuItem value={'ols'}>OLS</MenuItem>
                         </Select>
                     </FormControl>
 
-                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef} />}
+                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef}/>}
 
-                    <Input
+                    {selectedAlgo === 'svm' || selectedAlgo == 'ols' ? '' : <Input
                         id="input-number"
                         sx={{
                             marginTop: '20px',
@@ -81,28 +83,32 @@ export default class View extends React.Component<ViewProps> {
                                     ? 'nb_clusters'
                                     : ''
                         }
-                        disabled={selectedAlgo === 'svm'}
                     />
+                    }
+                    <div style={{width: '30%', margin: 'auto', marginTop: '20px'}}>
+                        {
 
-                    <div style={{ width: '30%', margin: 'auto', marginTop: '20px' }}>
-                        <h3 style={{ textAlign: 'center', color: '#fff', marginBottom: '10px' }}>
-                            {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
-                        </h3>
-                        <Slider
-                            id="input-learning-rate"
-                            defaultValue={0.01}
-                            min={0.01}
-                            max={0.1}
-                            step={0.01}
-                            valueLabelDisplay="on"
-                            aria-label="Learning Rate"
-                            sx={{
-                                color: '#fff',
-                                '& .MuiSlider-thumb': { color: '#fff' },
-                                '& .MuiSlider-track': { color: '#fff' },
-                                '& .MuiSlider-rail': { color: '#ccc' },
-                            }}
-                        />
+                            selectedAlgo == 'svm' || selectedAlgo == 'ols' ? ' ' :
+
+                                <div><h3 style={{textAlign: 'center', color: '#fff', marginBottom: '10px'}}>
+                                    {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
+                                </h3>
+                                    <Slider
+                                        id="input-learning-rate"
+                                        defaultValue={0.01}
+                                        min={0.01}
+                                        max={0.1}
+                                        step={0.01}
+                                        valueLabelDisplay="on"
+                                        aria-label="Learning Rate"
+                                        sx={{
+                                            color: '#fff',
+                                            '& .MuiSlider-thumb': {color: '#fff'},
+                                            '& .MuiSlider-track': {color: '#fff'},
+                                            '& .MuiSlider-rail': {color: '#ccc'},
+                                        }}
+                                    /></div>
+                        }
                     </div>
 
                     {selectedAlgo === 'svm' && (
@@ -123,7 +129,7 @@ export default class View extends React.Component<ViewProps> {
                                     id="input-kernel"
                                     value={selectedKernel}
                                     label="Kernel"
-                                    onChange={(e) => this.setState({ selectedKernel: e.target.value })}
+                                    onChange={(e) => this.setState({selectedKernel: e.target.value})}
                                 >
                                     <MenuItem value={'rbf'}>RBF</MenuItem>
                                     <MenuItem value={'poly'}>Polynomial</MenuItem>
@@ -171,7 +177,7 @@ export default class View extends React.Component<ViewProps> {
 
                     <Button
                         variant="contained"
-                        sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
+                        sx={{background: '#2874a6', color: '#fff', marginTop: '20px'}}
                         onClick={() => {
                             const nb_epochs = parseInt((document.querySelector('#input-number') as HTMLInputElement)?.value || '0');
                             const learning_rate = parseFloat((document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01');
@@ -200,6 +206,10 @@ export default class View extends React.Component<ViewProps> {
                                     lambda_svm,
                                     selectedKernel
                                 );
+                            } else if (selectedAlgo === 'ols') {
+                                train_ols(
+                                    selectedCatDataset
+                                );
                             }
                         }}
                     >
@@ -214,7 +224,7 @@ export default class View extends React.Component<ViewProps> {
                                 <Button
                                     variant="contained"
                                     className={`button-result button-result${index}`}
-                                    sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
+                                    sx={{background: '#2874a6', color: '#fff', marginTop: '20px'}}
                                     onClick={() => {
                                         setSelectedGraph(file);
                                         const btn = document.querySelector(`.button-result${index}`);
@@ -233,7 +243,7 @@ export default class View extends React.Component<ViewProps> {
                             xAxis={[
                                 {
                                     data: Array.from(
-                                        { length: Math.max(...(resultsFile?.results.map(r => r.data.length) || [600])) },
+                                        {length: Math.max(...(resultsFile?.results.map(r => r.data.length) || [600]))},
                                         (_, i) => i + 1
                                     ),
                                 },
@@ -241,7 +251,7 @@ export default class View extends React.Component<ViewProps> {
                             series={
                                 resultsFile?.results
                                     .filter((r) => selectedGraph.includes(r.name))
-                                    .map((r) => ({ data: r.data })) || []
+                                    .map((r) => ({data: r.data})) || []
                             }
                             width={1000}
                             height={500}

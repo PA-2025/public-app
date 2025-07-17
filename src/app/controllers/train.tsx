@@ -89,6 +89,13 @@ export default class TrainController extends Component<
                         filter_cat
                     )
                 }
+                train_ols={(
+                    filter_cat: string[]
+                ) =>
+                    this.train_model.train_ols(
+                        filter_cat
+                    )
+                }
                 train_svm={(
                     param,
                     learning_rate,
