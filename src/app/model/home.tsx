@@ -33,6 +33,22 @@ export class HomeModel {
         return data;
     }
 
+    public async predict_svm(file: File): Promise<result_prediction> {
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        const response = await fetch('http://localhost:8000/predict_svm', {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+            },
+            body: formData,
+        });
+        const data: result_prediction = await response.json();
+        document.querySelector('.pop-up')?.classList.add('active');
+        return data;
+    }
+
     public async predict_all(
         audio_file: File,
         weight_file: File
