@@ -71,6 +71,25 @@ export class TrainModel {
         return data;
     }
 
+    public async train_ols(
+        filter_cat: string[]
+    ) {
+        const response = await fetch(
+            `http://localhost:8000/train_ols`,
+            {
+                method: 'POST',
+
+                headers: {
+                    accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filter_cat),
+            }
+        );
+        const data = await response.json();
+        return data;
+    }
+
     public async get_cat_dataset(): Promise<GetCatDatasetResultsResponse> {
         const response = await fetch('http://localhost:8000/get_dataset_cat', {
             method: 'GET',

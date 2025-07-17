@@ -7,12 +7,15 @@ export interface ViewProps {
         learning_rate: number,
         filter_cat: string[]
     ) => Promise<any>;
-
     train_rbf: (
         gamma: number,
         number_clusters: number,
         filter_cat: string[]
     ) => Promise<any>;
+    train_ols: (
+        filter_cat: string[]
+    ) => Promise<any>;
+
 
     train_svm: (
         param: number,
