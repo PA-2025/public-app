@@ -53,7 +53,7 @@ export default class HomeController extends Component<
             }
         }
         if (!audio_file) {
-            alert('Please upload a file first');
+            alert('Upload a file first');
             return;
         }
 
@@ -70,16 +70,14 @@ export default class HomeController extends Component<
         if (weight_file && weight_file.files && weight_file.files.length > 0) {
             weight = weight_file.files[0];
         } else {
-            const response = await fetch('/w_best');
-            const blob = await response.blob();
-            weight = new File([blob], 'w_best');
+            weight = undefined;
         }
+        let result: any;
         if (!weight) {
-            alert('Please upload a weight file first');
-            return;
+            result = await this.home_model.predict_svm(audio_file);
+        } else {
+            result = await this.home_model.predict_all(audio_file, weight);
         }
-
-        const result = await this.home_model.predict_all(audio_file, weight);
         this.setState({ result: result });
 
         audioElement?.pause();
