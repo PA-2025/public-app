@@ -15,7 +15,6 @@ export class TrainModel {
             `http://localhost:8000/train_mlp?nb_epochs=${nb_epochs}&learning_rate=${learning_rate}`,
             {
                 method: 'POST',
-
                 headers: {
                     accept: 'application/json',
                     'Content-Type': 'application/json',
@@ -39,7 +38,28 @@ export class TrainModel {
             `http://localhost:8000/train_rbf?gamma=${gamma}&number_clusters=${number_clusters}`,
             {
                 method: 'POST',
+                headers: {
+                    accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(filter_cat),
+            }
+        );
+        const data = await response.json();
+        return data;
+    }
 
+    public async train_svm(
+        param: number,
+        learning_rate: number,
+        filter_cat: string[],
+        lambda_svm: number,
+        kernel: string
+    ) {
+        const response = await fetch(
+            `http://localhost:8000/train_svm?learning_rate=${learning_rate}&lambda_svm=${lambda_svm}&kernel=${kernel}&param=${param}`,
+            {
+                method: 'POST',
                 headers: {
                     accept: 'application/json',
                     'Content-Type': 'application/json',

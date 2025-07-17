@@ -15,10 +15,16 @@ import { Neural } from '../../component/neural';
 export default class View extends React.Component<ViewProps> {
     private neuralRef = React.createRef<Neural>();
 
+    state = {
+        selectedAlgo: 'mlp',
+        selectedKernel: 'rbf',
+    };
+
     render() {
         const {
             train_mlp,
             train_rbf,
+            train_svm,
             resultsTraining,
             resultsFile,
             selectedGraph,
@@ -27,6 +33,8 @@ export default class View extends React.Component<ViewProps> {
             setSelectedCatDataset,
             selectedCatDataset,
         } = this.props;
+
+        const { selectedAlgo, selectedKernel } = this.state;
 
         return (
             <div className={'train-page'}>
@@ -45,157 +53,172 @@ export default class View extends React.Component<ViewProps> {
                         <Select
                             labelId="select-label"
                             id="simple-select"
+                            value={selectedAlgo}
                             label="Algo"
-                            onChange={() => {
-                                setTimeout(() => {
-                                    setSelectedCatDataset('');
-                                }, 100);
-                            }}
+                            onChange={(e) => this.setState({ selectedAlgo: e.target.value, selectedKernel: 'rbf' })}
                         >
                             <MenuItem value={'mlp'}>MLP</MenuItem>
                             <MenuItem value={'rbf'}>RBF</MenuItem>
                             <MenuItem value={'svm'}>SVM</MenuItem>
-                            <MenuItem value={'linear'}>
-                                Linear Regression
-                            </MenuItem>
                         </Select>
                     </FormControl>
-                    {document.querySelector('input')?.value === 'mlp' ? (
-                        <Neural ref={this.neuralRef} />
-                    ) : (
-                        ''
-                    )}
+
+                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef} />}
+
                     <Input
                         id="input-number"
-                        sx={
-                            !['mlp', 'rbf'].includes(
-                                document.querySelector('input')?.value ?? ''
-                            )
-                                ? { display: 'none' }
-                                : {
-                                      marginTop: '20px',
-                                      background: '#2874a6',
-                                      color: '#fff',
-                                      padding: '10px',
-                                  }
-                        }
+                        sx={{
+                            marginTop: '20px',
+                            background: '#2874a6',
+                            color: '#fff',
+                            padding: '10px',
+                        }}
                         type="number"
                         placeholder={
-                            document.querySelector('input')?.value !== 'mlp'
-                                ? 'nb_clusters'
-                                : 'nb_epochs'
+                            selectedAlgo === 'mlp'
+                                ? 'nb_epochs'
+                                : selectedAlgo === 'rbf'
+                                    ? 'nb_clusters'
+                                    : ''
                         }
-                    />{' '}
-                    : ''
-                    <Slider
-                        sx={{ width: '30%', margin: 'auto', marginTop: '20px' }}
-                        aria-label="Custom marks"
-                        defaultValue={0.01}
-                        min={0}
-                        max={0.1}
-                        aria-valuetext={'learning rate'}
-                        step={0.01}
-                        valueLabelDisplay="auto"
-                        id="input-learning-rate"
+                        disabled={selectedAlgo === 'svm'}
                     />
-                    <h3>
-                        {document.querySelector('input')?.value === 'rbf'
-                            ? 'gamma'
-                            : 'Learning rate'}
-                    </h3>
+
+                    <div style={{ width: '30%', margin: 'auto', marginTop: '20px' }}>
+                        <h3 style={{ textAlign: 'center', color: '#fff', marginBottom: '10px' }}>
+                            {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
+                        </h3>
+                        <Slider
+                            id="input-learning-rate"
+                            defaultValue={0.01}
+                            min={0.01}
+                            max={0.1}
+                            step={0.01}
+                            valueLabelDisplay="on"
+                            aria-label="Learning Rate"
+                            sx={{
+                                color: '#fff',
+                                '& .MuiSlider-thumb': { color: '#fff' },
+                                '& .MuiSlider-track': { color: '#fff' },
+                                '& .MuiSlider-rail': { color: '#ccc' },
+                            }}
+                        />
+                    </div>
+
+                    {selectedAlgo === 'svm' && (
+                        <>
+                            <FormControl
+                                fullWidth
+                                sx={{
+                                    background: '#2874a6',
+                                    borderRadius: '10px',
+                                    marginTop: '20px',
+                                    width: '30%',
+                                    margin: 'auto',
+                                }}
+                            >
+                                <InputLabel id="kernel-label">Kernel</InputLabel>
+                                <Select
+                                    labelId="kernel-label"
+                                    id="input-kernel"
+                                    value={selectedKernel}
+                                    label="Kernel"
+                                    onChange={(e) => this.setState({ selectedKernel: e.target.value })}
+                                >
+                                    <MenuItem value={'rbf'}>RBF</MenuItem>
+                                    <MenuItem value={'poly'}>Polynomial</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <Input
+                                id="input-param"
+                                type="number"
+                                placeholder="param (γ ou degré)"
+                                sx={{
+                                    marginTop: '20px',
+                                    background: '#2874a6',
+                                    color: '#fff',
+                                    padding: '10px',
+                                }}
+                            />
+                            <Input
+                                id="input-lambda"
+                                type="number"
+                                placeholder="lambda_svm"
+                                sx={{
+                                    marginTop: '20px',
+                                    background: '#2874a6',
+                                    color: '#fff',
+                                    padding: '10px',
+                                }}
+                            />
+                        </>
+                    )}
+
                     <div className={'container-cat-dataset-filters'}>
                         {catDataset.map((cat) => (
                             <div
+                                key={cat}
                                 onClick={() => setSelectedCatDataset(cat)}
                                 className={
                                     'cat-dataset-box' +
-                                    (selectedCatDataset.includes(cat)
-                                        ? ' active'
-                                        : ' ')
+                                    (selectedCatDataset.includes(cat) ? ' active' : ' ')
                                 }
                             >
                                 {cat}
                             </div>
                         ))}
                     </div>
-                    <h3>Filtered Cat Dataset (default all)</h3>
+
                     <Button
                         variant="contained"
-                        sx={{
-                            background: '#2874a6',
-                            color: '#fff',
-                            marginTop: '20px',
-                        }}
+                        sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
                         onClick={() => {
-                            const nb_epochs = (
-                                document.querySelector(
-                                    '#input-number'
-                                ) as HTMLInputElement
-                            ).value;
-                            const learning_rate = (
-                                document.querySelector(
-                                    '#input-learning-rate input'
-                                ) as HTMLInputElement
-                            ).value;
-                            if (
-                                document.querySelector('input')?.value === 'mlp'
-                            ) {
+                            const nb_epochs = parseInt((document.querySelector('#input-number') as HTMLInputElement)?.value || '0');
+                            const learning_rate = parseFloat((document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01');
+
+                            if (selectedAlgo === 'mlp') {
                                 train_mlp(
-                                    parseInt(nb_epochs),
+                                    nb_epochs,
                                     this.neuralRef.current?.get_neural() || [],
-                                    parseFloat(learning_rate),
+                                    learning_rate,
                                     selectedCatDataset
-                                ).then((r) => console.log(r));
-                            } else if (
-                                document.querySelector('input')?.value === 'rbf'
-                            ) {
+                                );
+                            } else if (selectedAlgo === 'rbf') {
                                 train_rbf(
-                                    parseFloat(learning_rate),
-                                    parseInt(nb_epochs),
+                                    learning_rate,
+                                    nb_epochs,
                                     selectedCatDataset
-                                ).then((r) => console.log(r));
+                                );
+                            } else if (selectedAlgo === 'svm') {
+                                const param = parseFloat((document.querySelector('#input-param') as HTMLInputElement)?.value || '1');
+                                const lambda_svm = parseFloat((document.querySelector('#input-lambda') as HTMLInputElement)?.value || '0.01');
+
+                                train_svm(
+                                    param,
+                                    learning_rate,
+                                    selectedCatDataset,
+                                    lambda_svm,
+                                    selectedKernel
+                                );
                             }
                         }}
                     >
                         Train
                     </Button>
-                    <div />
                 </div>
+
                 <div className={'view_training_results'}>
                     <div className={'container-results'}>
                         {resultsTraining?.files.map((file, index) => (
                             <div key={index}>
                                 <Button
                                     variant="contained"
-                                    className={
-                                        'button-result button-result' + index
-                                    }
-                                    sx={{
-                                        background: '#2874a6',
-                                        color: '#fff',
-                                        marginTop: '20px',
-                                    }}
+                                    className={`button-result button-result${index}`}
+                                    sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
                                     onClick={() => {
                                         setSelectedGraph(file);
-                                        if (
-                                            document
-                                                .querySelector(
-                                                    '.button-result' + index
-                                                )
-                                                ?.classList.contains('selected')
-                                        ) {
-                                            document
-                                                .querySelector(
-                                                    '.button-result' + index
-                                                )
-                                                ?.classList.remove('selected');
-                                        } else {
-                                            document
-                                                .querySelector(
-                                                    '.button-result' + index
-                                                )
-                                                ?.classList.add('selected');
-                                        }
+                                        const btn = document.querySelector(`.button-result${index}`);
+                                        btn?.classList.toggle('selected');
                                     }}
                                 >
                                     {file}
@@ -203,32 +226,22 @@ export default class View extends React.Component<ViewProps> {
                             </div>
                         ))}
                     </div>
+
                     <div className={'container-charts'}>
                         <LineChart
                             title={'Training results'}
                             xAxis={[
                                 {
                                     data: Array.from(
-                                        {
-                                            length: Math.max(
-                                                ...(resultsFile?.results.map(
-                                                    (result) =>
-                                                        result.data.length
-                                                ) || [600])
-                                            ),
-                                        },
+                                        { length: Math.max(...(resultsFile?.results.map(r => r.data.length) || [600])) },
                                         (_, i) => i + 1
                                     ),
                                 },
                             ]}
                             series={
                                 resultsFile?.results
-                                    .filter((result) =>
-                                        selectedGraph.includes(result.name)
-                                    )
-                                    .map((result) => ({
-                                        data: result.data,
-                                    })) || []
+                                    .filter((r) => selectedGraph.includes(r.name))
+                                    .map((r) => ({ data: r.data })) || []
                             }
                             width={1000}
                             height={500}
