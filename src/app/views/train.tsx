@@ -1,5 +1,5 @@
 import React from 'react';
-import {ViewProps} from '@/src/app/types/train';
+import { ViewProps } from '@/src/app/types/train';
 import {
     Button,
     FormControl,
@@ -9,8 +9,8 @@ import {
     Select,
     Slider,
 } from '@mui/material';
-import {LineChart} from '@mui/x-charts/LineChart';
-import {Neural} from '../../component/neural';
+import { LineChart } from '@mui/x-charts/LineChart';
+import { Neural } from '../../component/neural';
 
 export default class View extends React.Component<ViewProps> {
     private neuralRef = React.createRef<Neural>();
@@ -35,11 +35,13 @@ export default class View extends React.Component<ViewProps> {
             selectedCatDataset,
         } = this.props;
 
-        const {selectedAlgo, selectedKernel} = this.state;
+        const { selectedAlgo, selectedKernel } = this.state;
 
         return (
-            <div className={'train-page'}>
-                <div className={'train-buttons'}>
+            <div className="train-page">
+                <div className="train-buttons">
+
+                    {/* Sélection de l'algo */}
                     <FormControl
                         fullWidth
                         sx={{
@@ -56,61 +58,62 @@ export default class View extends React.Component<ViewProps> {
                             id="simple-select"
                             value={selectedAlgo}
                             label="Algo"
-                            onChange={(e) => this.setState({selectedAlgo: e.target.value, selectedKernel: 'rbf'})}
+                            onChange={(e) =>
+                                this.setState({ selectedAlgo: e.target.value, selectedKernel: 'rbf' })
+                            }
                         >
-                            <MenuItem value={'mlp'}>MLP</MenuItem>
-                            <MenuItem value={'rbf'}>RBF</MenuItem>
-                            <MenuItem value={'svm'}>SVM</MenuItem>
-                            <MenuItem value={'ols'}>OLS</MenuItem>
+                            <MenuItem value="mlp">MLP</MenuItem>
+                            <MenuItem value="rbf">RBF</MenuItem>
+                            <MenuItem value="svm">SVM</MenuItem>
+                            <MenuItem value="ols">OLS</MenuItem>
                         </Select>
                     </FormControl>
 
-                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef}/>}
+                    {/* Neurones pour MLP */}
+                    {selectedAlgo === 'mlp' && <Neural ref={this.neuralRef} />}
 
-                    {selectedAlgo === 'svm' || selectedAlgo == 'ols' ? '' : <Input
-                        id="input-number"
-                        sx={{
-                            marginTop: '20px',
-                            background: '#2874a6',
-                            color: '#fff',
-                            padding: '10px',
-                        }}
-                        type="number"
-                        placeholder={
-                            selectedAlgo === 'mlp'
-                                ? 'nb_epochs'
-                                : selectedAlgo === 'rbf'
-                                    ? 'nb_clusters'
-                                    : ''
-                        }
-                    />
-                    }
-                    <div style={{width: '30%', margin: 'auto', marginTop: '20px'}}>
-                        {
+                    {/* nb_epochs ou nb_clusters */}
+                    {selectedAlgo !== 'svm' && selectedAlgo !== 'ols' && (
+                        <Input
+                            id="input-number"
+                            sx={{
+                                marginTop: '20px',
+                                background: '#2874a6',
+                                color: '#fff',
+                                padding: '10px',
+                            }}
+                            type="number"
+                            placeholder={
+                                selectedAlgo === 'mlp' ? 'nb_epochs' : 'nb_clusters'
+                            }
+                        />
+                    )}
 
-                            selectedAlgo == 'svm' || selectedAlgo == 'ols' ? ' ' :
+                    {/* Slider learning rate ou gamma */}
+                    {selectedAlgo !== 'ols' && (
+                        <div style={{ width: '30%', margin: 'auto', marginTop: '20px' }}>
+                            <h3 style={{ textAlign: 'center', color: '#fff', marginBottom: '10px' }}>
+                                {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
+                            </h3>
+                            <Slider
+                                id="input-learning-rate"
+                                defaultValue={0.01}
+                                min={0.01}
+                                max={selectedAlgo === 'svm' ? 1.0 : 0.1}
+                                step={0.01}
+                                valueLabelDisplay="on"
+                                aria-label="Learning Rate"
+                                sx={{
+                                    color: '#fff',
+                                    '& .MuiSlider-thumb': { color: '#fff' },
+                                    '& .MuiSlider-track': { color: '#fff' },
+                                    '& .MuiSlider-rail': { color: '#ccc' },
+                                }}
+                            />
+                        </div>
+                    )}
 
-                                <div><h3 style={{textAlign: 'center', color: '#fff', marginBottom: '10px'}}>
-                                    {selectedAlgo === 'rbf' ? 'Gamma' : 'Learning rate'}
-                                </h3>
-                                    <Slider
-                                        id="input-learning-rate"
-                                        defaultValue={0.01}
-                                        min={0.01}
-                                        max={0.1}
-                                        step={0.01}
-                                        valueLabelDisplay="on"
-                                        aria-label="Learning Rate"
-                                        sx={{
-                                            color: '#fff',
-                                            '& .MuiSlider-thumb': {color: '#fff'},
-                                            '& .MuiSlider-track': {color: '#fff'},
-                                            '& .MuiSlider-rail': {color: '#ccc'},
-                                        }}
-                                    /></div>
-                        }
-                    </div>
-
+                    {/* Paramètres spécifiques au SVM */}
                     {selectedAlgo === 'svm' && (
                         <>
                             <FormControl
@@ -129,10 +132,12 @@ export default class View extends React.Component<ViewProps> {
                                     id="input-kernel"
                                     value={selectedKernel}
                                     label="Kernel"
-                                    onChange={(e) => this.setState({selectedKernel: e.target.value})}
+                                    onChange={(e) =>
+                                        this.setState({ selectedKernel: e.target.value })
+                                    }
                                 >
-                                    <MenuItem value={'rbf'}>RBF</MenuItem>
-                                    <MenuItem value={'poly'}>Polynomial</MenuItem>
+                                    <MenuItem value="rbf">RBF</MenuItem>
+                                    <MenuItem value="poly">Polynomial</MenuItem>
                                 </Select>
                             </FormControl>
                             <Input
@@ -160,14 +165,15 @@ export default class View extends React.Component<ViewProps> {
                         </>
                     )}
 
-                    <div className={'container-cat-dataset-filters'}>
+                    {/* Sélection des classes */}
+                    <div className="container-cat-dataset-filters">
                         {catDataset.map((cat) => (
                             <div
                                 key={cat}
                                 onClick={() => setSelectedCatDataset(cat)}
                                 className={
                                     'cat-dataset-box' +
-                                    (selectedCatDataset.includes(cat) ? ' active' : ' ')
+                                    (selectedCatDataset.includes(cat) ? ' active' : '')
                                 }
                             >
                                 {cat}
@@ -175,12 +181,18 @@ export default class View extends React.Component<ViewProps> {
                         ))}
                     </div>
 
+                    {/* Bouton Train */}
                     <Button
                         variant="contained"
-                        sx={{background: '#2874a6', color: '#fff', marginTop: '20px'}}
+                        sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
                         onClick={() => {
-                            const nb_epochs = parseInt((document.querySelector('#input-number') as HTMLInputElement)?.value || '0');
-                            const learning_rate = parseFloat((document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01');
+                            const nb_epochs = selectedAlgo !== 'svm' && selectedAlgo !== 'ols'
+                                ? parseInt((document.querySelector('#input-number') as HTMLInputElement)?.value || '0')
+                                : 0;
+
+                            const learning_rate = parseFloat(
+                                (document.querySelector('#input-learning-rate input') as HTMLInputElement)?.value || '0.01'
+                            );
 
                             if (selectedAlgo === 'mlp') {
                                 train_mlp(
@@ -190,26 +202,14 @@ export default class View extends React.Component<ViewProps> {
                                     selectedCatDataset
                                 );
                             } else if (selectedAlgo === 'rbf') {
-                                train_rbf(
-                                    learning_rate,
-                                    nb_epochs,
-                                    selectedCatDataset
-                                );
+                                train_rbf(learning_rate, nb_epochs, selectedCatDataset);
                             } else if (selectedAlgo === 'svm') {
                                 const param = parseFloat((document.querySelector('#input-param') as HTMLInputElement)?.value || '1');
                                 const lambda_svm = parseFloat((document.querySelector('#input-lambda') as HTMLInputElement)?.value || '0.01');
 
-                                train_svm(
-                                    param,
-                                    learning_rate,
-                                    selectedCatDataset,
-                                    lambda_svm,
-                                    selectedKernel
-                                );
+                                train_svm(param, learning_rate, selectedCatDataset, lambda_svm, selectedKernel);
                             } else if (selectedAlgo === 'ols') {
-                                train_ols(
-                                    selectedCatDataset
-                                );
+                                train_ols(selectedCatDataset);
                             }
                         }}
                     >
@@ -217,14 +217,15 @@ export default class View extends React.Component<ViewProps> {
                     </Button>
                 </div>
 
-                <div className={'view_training_results'}>
-                    <div className={'container-results'}>
+                {/* Résultats */}
+                <div className="view_training_results">
+                    <div className="container-results">
                         {resultsTraining?.files.map((file, index) => (
                             <div key={index}>
                                 <Button
                                     variant="contained"
                                     className={`button-result button-result${index}`}
-                                    sx={{background: '#2874a6', color: '#fff', marginTop: '20px'}}
+                                    sx={{ background: '#2874a6', color: '#fff', marginTop: '20px' }}
                                     onClick={() => {
                                         setSelectedGraph(file);
                                         const btn = document.querySelector(`.button-result${index}`);
@@ -237,13 +238,13 @@ export default class View extends React.Component<ViewProps> {
                         ))}
                     </div>
 
-                    <div className={'container-charts'}>
+                    <div className="container-charts">
                         <LineChart
-                            title={'Training results'}
+                            title="Training results"
                             xAxis={[
                                 {
                                     data: Array.from(
-                                        {length: Math.max(...(resultsFile?.results.map(r => r.data.length) || [600]))},
+                                        { length: Math.max(...(resultsFile?.results.map((r) => r.data.length) || [600])) },
                                         (_, i) => i + 1
                                     ),
                                 },
@@ -251,7 +252,7 @@ export default class View extends React.Component<ViewProps> {
                             series={
                                 resultsFile?.results
                                     .filter((r) => selectedGraph.includes(r.name))
-                                    .map((r) => ({data: r.data})) || []
+                                    .map((r) => ({ data: r.data })) || []
                             }
                             width={1000}
                             height={500}
